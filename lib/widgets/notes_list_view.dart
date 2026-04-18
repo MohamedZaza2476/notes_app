@@ -4,14 +4,26 @@ import 'package:notes_app/cubits/notes_cubit/notes_cubit.dart';
 import 'package:notes_app/models/note_model.dart';
 import 'package:notes_app/widgets/custom_note_item.dart';
 
-class NotesListView extends StatelessWidget {
+class NotesListView extends StatefulWidget {
   const NotesListView({super.key});
 
   @override
+  State<NotesListView> createState() => _NotesListViewState();
+}
+
+class _NotesListViewState extends State<NotesListView> {
+  @override
+  void initState() {
+    super.initState();
+    BlocProvider.of<NotesCubit>(context).fetchAllNotes();
+  }
+
+  @override
   Widget build(BuildContext context) {
-    List<NoteModel> notes = BlocProvider.of<NotesCubit>(context).notes ?? [];
     return BlocBuilder<NotesCubit, NotesState>(
       builder: (context, state) {
+        List<NoteModel> notes =
+            BlocProvider.of<NotesCubit>(context).notes ?? [];
         return Padding(
           padding: const EdgeInsets.symmetric(vertical: 16),
           child: ListView.builder(
